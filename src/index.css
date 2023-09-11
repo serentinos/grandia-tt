@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.inputField {
+  @apply text-gray-900 block w-full p-2.5 text-center bg-transparent
+}
+
+.ipDot {
+  @apply text-xl
+}
