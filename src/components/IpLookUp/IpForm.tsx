@@ -12,7 +12,6 @@ const getPreparedValue = (value: string) => {
   }
 
   const filteredValue = value.replace(/[^0-9]+/gi, '');
-  console.log(filteredValue)
   let numberValue = Number(filteredValue);
 
   if (numberValue > maxIpCellValue) {
@@ -42,8 +41,6 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
   const [error, setError] = useState('');
   const [isloading, setIsLoading] = useState(false);
   const inputsRefs = useRef<HTMLInputElement[]>([]);
-
-  console.log(isloading, error)
   
   const fetchData = async (ipNumber: string) => {
     setIsLoading(true);
@@ -59,7 +56,6 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
       }
 
       setIpInfo(dataFromServer);
-      console.log(dataFromServer);
     } catch (error) {
       setError((error as Error).message)
     } finally {

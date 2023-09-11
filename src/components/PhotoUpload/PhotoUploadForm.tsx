@@ -20,7 +20,6 @@ const PhotoUploadForm:FC<Props> = ({ onChangeResultData }) => {
   const [loadingError, setLoadingError] = useState<string | undefined>('');
   const [isLoading, setIsLoading] = useState(false);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
-  console.log(file);
   
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
