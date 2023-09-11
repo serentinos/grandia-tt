@@ -3,7 +3,7 @@ import { FC } from "react"
 interface Props {
   children: React.ReactNode,
   isLoading: boolean,
-  disabled: boolean
+  disabled?: boolean
 }
 
 const Button:FC<Props> = ({ children, isLoading, disabled }) => {

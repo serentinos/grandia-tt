@@ -146,7 +146,8 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="">
+      <h2 className="font-bold text-center mb-2">Improved Form</h2>
       <form
         onSubmit={handleSubmit}
         className="max-w-[400px] h-max"
