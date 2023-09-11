@@ -38,6 +38,7 @@ interface Props {
 
 export const IpForm:FC<Props> = ({ setIpInfo }) => {
   const [formStore, setFormStore] = useState<string[]>(['', '', '', '']);
+  const [isAllowToSubmit, setIsAllowToSubmit] = useState(false);
   const [error, setError] = useState('');
   const [isloading, setIsLoading] = useState(false);
   const inputsRefs = useRef<HTMLInputElement[]>([]);
@@ -71,13 +72,6 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
     setError('');
 
     const ipString = formStore.join('.');
-    const isAllCellsAreNotEmpty = formStore.every(item => item !== '');
-  
-    if (!isAllCellsAreNotEmpty) {
-      setError('Error: You are not complete the ip input field, it should be like x.x.x.x');
-
-      return;
-    }
 
     fetchData(ipString);
   };
@@ -127,6 +121,10 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
 
     changeFunc((prevValue) => {
       const newFormState = editFormStore(prevValue, inputIndex, newValue);
+
+      const isAllCellsAreNotEmpty = newFormState.every(item => item !== '');
+  
+      isAllCellsAreNotEmpty ? setIsAllowToSubmit(true) : setIsAllowToSubmit(false);
 
       if (newValue === prevValue[inputIndex]) {
         return newFormState;
@@ -179,7 +177,10 @@ export const IpForm:FC<Props> = ({ setIpInfo }) => {
           </ErrorMessage>
         )}
 
-        <Button isLoading={isloading}>
+        <Button
+          isLoading={isloading}
+          disabled={!isAllowToSubmit}
+        >
           Check Ip
         </Button>
       </form>

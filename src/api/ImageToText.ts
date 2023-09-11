@@ -1,8 +1,8 @@
-import { clientTest } from "../helpers/fetchClient";
+import { client } from "../helpers/fetchClient";
 import { TextData } from "../types";
 
 const url = '/imagetotext';
 
 export const postImage = (formData: FormData) => {
-  return clientTest.post<TextData[]>(url, formData);
+  return client.post<TextData[]>(url, formData).then((res) => res.data);
 };

@@ -1,8 +1,9 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react'
 import Button from "../Button/Button";
 import { postImage } from '../../api/ImageToText';
 import { TextData } from '../../types';
 import { AxiosError } from 'axios';
+import { ErrorMessage } from '../ErrorMessage';
 
 const transformRawDataToText = (data: TextData[]) => {
   const resultText = data.map(dataItem => dataItem.text).join(' ');
@@ -10,7 +11,11 @@ const transformRawDataToText = (data: TextData[]) => {
   return resultText;
 }
 
-const PhotoUploadForm = () => {
+interface Props {
+  onChangeResultData:  React.Dispatch<React.SetStateAction<string>>
+}
+
+const PhotoUploadForm:FC<Props> = ({ onChangeResultData }) => {
   const [file, setFile] = useState<File | undefined>();
   const [loadingError, setLoadingError] = useState<string | undefined>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,12 +25,16 @@ const PhotoUploadForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setLoadingError('');
+    onChangeResultData('');
     onFileUpload();
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (!hiddenFileInput.current) return;
-    
+    setLoadingError('');
+
     hiddenFileInput.current.click();
   };
 
@@ -35,14 +44,19 @@ const PhotoUploadForm = () => {
     
     if (!file) return;
     
-    formData.append('Image', file);
+    formData.append('image', file);
     setIsLoading(true);
 
     try {
       const resultData = await postImage(formData);
       const resultText = transformRawDataToText(resultData);
+
+      if (!resultText) {
+        setLoadingError('Cannot recognize any text in image, try again or another image');
+        return;
+      }
       
-      console.log(resultText);
+      onChangeResultData(resultText);
     } catch (error) {
       setLoadingError((error as AxiosError<{error: string}>).response?.data.error);
     } finally {
@@ -79,6 +93,12 @@ const PhotoUploadForm = () => {
           </button>
         </div>
 
+        {loadingError && (
+          <ErrorMessage>
+            {loadingError}
+          </ErrorMessage>
+        )}
+
         <input
           type="file"
           className='hidden'
@@ -86,7 +106,12 @@ const PhotoUploadForm = () => {
           accept='image/png, image/jpeg'
           onChange={onFileChange}
         />
-        <Button isLoading={isLoading}>Image to text</Button>
+        <Button
+          isLoading={isLoading}
+          disabled={!file}
+        >
+          Image to text
+        </Button>
       </form>
     </div>
   )
