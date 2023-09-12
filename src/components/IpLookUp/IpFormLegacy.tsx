@@ -33,6 +33,13 @@ export const IpFormLegacy:FC<Props> = ({ setIpInfo }) => {
       Number(value) <= maxBlockValue && Number(value) >= 0
     ));
 
+    const isBlockEmpty = stringArray.some(value => !value);
+
+    if (isBlockEmpty) {
+      setError('Between dots should be number in range 0 - 255');
+      return false;
+    }
+
     if (!isInRange) {
       setError('IP address should be in range 0.0.0.0 - 255.255.255.255')
       return false;
