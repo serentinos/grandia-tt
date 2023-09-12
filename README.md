@@ -4,6 +4,7 @@
 [Demo](https://grandia-tt.vercel.app/)
 
 ## Video Demo
+[Screencast from 2023-09-12 09-47-40.webm](https://github.com/serentinos/grandia-tt/assets/56607847/cb2852dd-74a9-4913-80c7-d71a5634ea9e)
 
 ## About
 Implemented in three forms:
